@@ -13,10 +13,6 @@ using var reader = new StreamReader(filePath);
 var lineCount = 0;
 var possibleGames = 0;
 
-const int MaxRed = 12;
-const int MaxGreen = 13;
-const int MaxBlue = 14;
-
 while (true)
 {
     var line = await reader.ReadLineAsync();
@@ -25,12 +21,6 @@ while (true)
 
     var sp1 = line.Split(':', 2);
     if (sp1.Length != 2) throw new ArgumentException("Failed to extract game id and iterations");
-
-    var idSplit = sp1[0].Split(' ');
-    if (!int.TryParse(idSplit[1], out var id))
-    {
-        throw new ArgumentException("Failed to parse game id");
-    }
 
     var iterations = sp1[1].Split(';');
 
@@ -78,12 +68,9 @@ while (true)
         }
     }
 
-    if (currentRed > MaxRed || currentGreen > MaxGreen || currentBlue > MaxBlue)
-    {
-        continue;
-    }
+    var power = currentRed * currentBlue * currentGreen;
 
-    possibleGames += id;
+    possibleGames += power;
 }
 
 Console.WriteLine($"Possible Games: {possibleGames}");
